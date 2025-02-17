@@ -1,0 +1,117 @@
+nohup: ignoring input
+WARNING 02-17 14:56:58 cuda.py:23] You are using a deprecated `pynvml` package. Please install `nvidia-ml-py` instead, and make sure to uninstall `pynvml`. When both of them are installed, `pynvml` will take precedence and cause errors. See https://pypi.org/project/pynvml for more information.
+INFO 02-17 14:57:07 config.py:350] This model supports multiple tasks: {'generate', 'embedding'}. Defaulting to 'generate'.
+WARNING 02-17 14:57:07 arg_utils.py:1075] [DEPRECATED] Block manager v1 has been removed, and setting --use-v2-block-manager to True or False has no effect on vLLM behavior. Please remove --use-v2-block-manager in your engine argument. If your use case is not supported by SelfAttnBlockSpaceManager (i.e. block manager v2), please file an issue with detailed information.
+INFO 02-17 14:57:07 llm_engine.py:249] Initializing an LLM engine (v0.6.4.post1) with config: model='/DATA/LLM_model/deepseek/DeepSeek-R1-Distill-Qwen-1.5B', speculative_config=None, tokenizer='/DATA/LLM_model/deepseek/DeepSeek-R1-Distill-Qwen-1.5B', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, override_neuron_config=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=8192, download_dir=None, load_format=LoadFormat.AUTO, tensor_parallel_size=1, pipeline_parallel_size=1, disable_custom_all_reduce=False, quantization=None, enforce_eager=False, kv_cache_dtype=auto, quantization_param_path=None, device_config=cuda, decoding_config=DecodingConfig(guided_decoding_backend='outlines'), observability_config=ObservabilityConfig(otlp_traces_endpoint=None, collect_model_forward_time=False, collect_model_execute_time=False), seed=0, served_model_name=DeepSeek-R1-Distill-Qwen-1.5B, num_scheduler_steps=1, chunked_prefill_enabled=False multi_step_stream_outputs=True, enable_prefix_caching=False, use_async_output_proc=True, use_cached_outputs=False, chat_template_text_format=string, mm_processor_kwargs=None, pooler_config=None)
+INFO 02-17 14:57:08 selector.py:135] Using Flash Attention backend.
+INFO 02-17 14:57:12 model_runner.py:1072] Starting to load model /DATA/LLM_model/deepseek/DeepSeek-R1-Distill-Qwen-1.5B...
+Loading safetensors checkpoint shards:   0% Completed | 0/1 [00:00<?, ?it/s]
+Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:00<00:00,  1.32it/s]
+Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:00<00:00,  1.32it/s]
+
+INFO 02-17 14:57:15 model_runner.py:1077] Loading model weights took 3.3460 GB
+INFO 02-17 14:57:19 worker.py:232] Memory profiling results: total_gpu_memory=79.15GiB initial_memory_usage=40.84GiB peak_torch_memory=4.75GiB memory_usage_post_profile=40.88GiB non_torch_memory=37.53GiB kv_cache_size=-34.37GiB gpu_memory_utilization=0.10
+INFO 02-17 14:57:19 gpu_executor.py:113] # GPU blocks: 0, # CPU blocks: 9362
+INFO 02-17 14:57:19 gpu_executor.py:117] Maximum concurrency for 8192 tokens per request: 0.00x
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/DATA/LLM_zhangfeng/data_clean/service/openai_api_distill_1__5B.py", line 229, in <module>
+[rank0]:     engine = AsyncLLMEngine.from_engine_args(engine_args)
+[rank0]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/llm_zhangfeng/anaconda3/envs/LLM/lib/python3.11/site-packages/vllm/engine/async_llm_engine.py", line 691, in from_engine_args
+[rank0]:     engine = cls(
+[rank0]:              ^^^^
+[rank0]:   File "/home/llm_zhangfeng/anaconda3/envs/LLM/lib/python3.11/site-packages/vllm/engine/async_llm_engine.py", line 578, in __init__
+[rank0]:     self.engine = self._engine_class(*args, **kwargs)
+[rank0]:                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/llm_zhangfeng/anaconda3/envs/LLM/lib/python3.11/site-packages/vllm/engine/async_llm_engine.py", line 264, in __init__
+[rank0]:     super().__init__(*args, **kwargs)
+[rank0]:   File "/home/llm_zhangfeng/anaconda3/envs/LLM/lib/python3.11/site-packages/vllm/engine/llm_engine.py", line 350, in __init__
+[rank0]:     self._initialize_kv_caches()
+[rank0]:   File "/home/llm_zhangfeng/anaconda3/envs/LLM/lib/python3.11/site-packages/vllm/engine/llm_engine.py", line 500, in _initialize_kv_caches
+[rank0]:     self.model_executor.initialize_cache(num_gpu_blocks, num_cpu_blocks)
+[rank0]:   File "/home/llm_zhangfeng/anaconda3/envs/LLM/lib/python3.11/site-packages/vllm/executor/gpu_executor.py", line 120, in initialize_cache
+[rank0]:     self.driver_worker.initialize_cache(num_gpu_blocks, num_cpu_blocks)
+[rank0]:   File "/home/llm_zhangfeng/anaconda3/envs/LLM/lib/python3.11/site-packages/vllm/worker/worker.py", line 268, in initialize_cache
+[rank0]:     raise_if_cache_size_invalid(num_gpu_blocks,
+[rank0]:   File "/home/llm_zhangfeng/anaconda3/envs/LLM/lib/python3.11/site-packages/vllm/worker/worker.py", line 493, in raise_if_cache_size_invalid
+[rank0]:     raise ValueError("No available memory for the cache blocks. "
+[rank0]: ValueError: No available memory for the cache blocks. Try increasing `gpu_memory_utilization` when initializing the engine.
+[rank0]:[W217 14:57:19.307625848 ProcessGroupNCCL.cpp:1250] Warning: WARNING: process group has NOT been destroyed before we destruct ProcessGroupNCCL. On normal program exit, the application should call destroy_process_group to ensure that any pending NCCL operations have finished in this process. In rare cases this process can exit before this point and block the progress of another member of the process group. This constraint has always been present,  but this warning has only been added since PyTorch 2.4 (function operator())
+nohup: ignoring input
+WARNING 02-17 15:02:39 cuda.py:23] You are using a deprecated `pynvml` package. Please install `nvidia-ml-py` instead, and make sure to uninstall `pynvml`. When both of them are installed, `pynvml` will take precedence and cause errors. See https://pypi.org/project/pynvml for more information.
+INFO 02-17 15:02:48 config.py:350] This model supports multiple tasks: {'generate', 'embedding'}. Defaulting to 'generate'.
+WARNING 02-17 15:02:48 arg_utils.py:1075] [DEPRECATED] Block manager v1 has been removed, and setting --use-v2-block-manager to True or False has no effect on vLLM behavior. Please remove --use-v2-block-manager in your engine argument. If your use case is not supported by SelfAttnBlockSpaceManager (i.e. block manager v2), please file an issue with detailed information.
+INFO 02-17 15:02:48 llm_engine.py:249] Initializing an LLM engine (v0.6.4.post1) with config: model='/DATA/LLM_model/deepseek/DeepSeek-R1-Distill-Qwen-1.5B', speculative_config=None, tokenizer='/DATA/LLM_model/deepseek/DeepSeek-R1-Distill-Qwen-1.5B', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, override_neuron_config=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=8192, download_dir=None, load_format=LoadFormat.AUTO, tensor_parallel_size=1, pipeline_parallel_size=1, disable_custom_all_reduce=False, quantization=None, enforce_eager=False, kv_cache_dtype=auto, quantization_param_path=None, device_config=cuda, decoding_config=DecodingConfig(guided_decoding_backend='outlines'), observability_config=ObservabilityConfig(otlp_traces_endpoint=None, collect_model_forward_time=False, collect_model_execute_time=False), seed=0, served_model_name=DeepSeek-R1-Distill-Qwen-1.5B, num_scheduler_steps=1, chunked_prefill_enabled=False multi_step_stream_outputs=True, enable_prefix_caching=False, use_async_output_proc=True, use_cached_outputs=False, chat_template_text_format=string, mm_processor_kwargs=None, pooler_config=None)
+INFO 02-17 15:02:49 selector.py:135] Using Flash Attention backend.
+INFO 02-17 15:02:52 model_runner.py:1072] Starting to load model /DATA/LLM_model/deepseek/DeepSeek-R1-Distill-Qwen-1.5B...
+Loading safetensors checkpoint shards:   0% Completed | 0/1 [00:00<?, ?it/s]
+Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:00<00:00,  1.12it/s]
+Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:00<00:00,  1.12it/s]
+
+INFO 02-17 15:02:54 model_runner.py:1077] Loading model weights took 3.3460 GB
+INFO 02-17 15:02:57 worker.py:232] Memory profiling results: total_gpu_memory=79.15GiB initial_memory_usage=62.62GiB peak_torch_memory=4.75GiB memory_usage_post_profile=62.66GiB non_torch_memory=59.31GiB kv_cache_size=-56.15GiB gpu_memory_utilization=0.10
+INFO 02-17 15:02:57 gpu_executor.py:113] # GPU blocks: 0, # CPU blocks: 9362
+INFO 02-17 15:02:57 gpu_executor.py:117] Maximum concurrency for 8192 tokens per request: 0.00x
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/DATA/LLM_zhangfeng/data_clean/service/openai_api_distill_1__5B.py", line 229, in <module>
+[rank0]:     engine = AsyncLLMEngine.from_engine_args(engine_args)
+[rank0]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/llm_zhangfeng/anaconda3/envs/LLM/lib/python3.11/site-packages/vllm/engine/async_llm_engine.py", line 691, in from_engine_args
+[rank0]:     engine = cls(
+[rank0]:              ^^^^
+[rank0]:   File "/home/llm_zhangfeng/anaconda3/envs/LLM/lib/python3.11/site-packages/vllm/engine/async_llm_engine.py", line 578, in __init__
+[rank0]:     self.engine = self._engine_class(*args, **kwargs)
+[rank0]:                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/llm_zhangfeng/anaconda3/envs/LLM/lib/python3.11/site-packages/vllm/engine/async_llm_engine.py", line 264, in __init__
+[rank0]:     super().__init__(*args, **kwargs)
+[rank0]:   File "/home/llm_zhangfeng/anaconda3/envs/LLM/lib/python3.11/site-packages/vllm/engine/llm_engine.py", line 350, in __init__
+[rank0]:     self._initialize_kv_caches()
+[rank0]:   File "/home/llm_zhangfeng/anaconda3/envs/LLM/lib/python3.11/site-packages/vllm/engine/llm_engine.py", line 500, in _initialize_kv_caches
+[rank0]:     self.model_executor.initialize_cache(num_gpu_blocks, num_cpu_blocks)
+[rank0]:   File "/home/llm_zhangfeng/anaconda3/envs/LLM/lib/python3.11/site-packages/vllm/executor/gpu_executor.py", line 120, in initialize_cache
+[rank0]:     self.driver_worker.initialize_cache(num_gpu_blocks, num_cpu_blocks)
+[rank0]:   File "/home/llm_zhangfeng/anaconda3/envs/LLM/lib/python3.11/site-packages/vllm/worker/worker.py", line 268, in initialize_cache
+[rank0]:     raise_if_cache_size_invalid(num_gpu_blocks,
+[rank0]:   File "/home/llm_zhangfeng/anaconda3/envs/LLM/lib/python3.11/site-packages/vllm/worker/worker.py", line 493, in raise_if_cache_size_invalid
+[rank0]:     raise ValueError("No available memory for the cache blocks. "
+[rank0]: ValueError: No available memory for the cache blocks. Try increasing `gpu_memory_utilization` when initializing the engine.
+[rank0]:[W217 15:02:58.913870157 ProcessGroupNCCL.cpp:1250] Warning: WARNING: process group has NOT been destroyed before we destruct ProcessGroupNCCL. On normal program exit, the application should call destroy_process_group to ensure that any pending NCCL operations have finished in this process. In rare cases this process can exit before this point and block the progress of another member of the process group. This constraint has always been present,  but this warning has only been added since PyTorch 2.4 (function operator())
+nohup: ignoring input
+WARNING 02-17 15:04:21 cuda.py:23] You are using a deprecated `pynvml` package. Please install `nvidia-ml-py` instead, and make sure to uninstall `pynvml`. When both of them are installed, `pynvml` will take precedence and cause errors. See https://pypi.org/project/pynvml for more information.
+INFO 02-17 15:04:31 config.py:350] This model supports multiple tasks: {'embedding', 'generate'}. Defaulting to 'generate'.
+WARNING 02-17 15:04:31 arg_utils.py:1075] [DEPRECATED] Block manager v1 has been removed, and setting --use-v2-block-manager to True or False has no effect on vLLM behavior. Please remove --use-v2-block-manager in your engine argument. If your use case is not supported by SelfAttnBlockSpaceManager (i.e. block manager v2), please file an issue with detailed information.
+INFO 02-17 15:04:31 llm_engine.py:249] Initializing an LLM engine (v0.6.4.post1) with config: model='/DATA/LLM_model/deepseek/DeepSeek-R1-Distill-Qwen-1.5B', speculative_config=None, tokenizer='/DATA/LLM_model/deepseek/DeepSeek-R1-Distill-Qwen-1.5B', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, override_neuron_config=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=8192, download_dir=None, load_format=LoadFormat.AUTO, tensor_parallel_size=1, pipeline_parallel_size=1, disable_custom_all_reduce=False, quantization=None, enforce_eager=False, kv_cache_dtype=auto, quantization_param_path=None, device_config=cuda, decoding_config=DecodingConfig(guided_decoding_backend='outlines'), observability_config=ObservabilityConfig(otlp_traces_endpoint=None, collect_model_forward_time=False, collect_model_execute_time=False), seed=0, served_model_name=DeepSeek-R1-Distill-Qwen-1.5B, num_scheduler_steps=1, chunked_prefill_enabled=False multi_step_stream_outputs=True, enable_prefix_caching=False, use_async_output_proc=True, use_cached_outputs=False, chat_template_text_format=string, mm_processor_kwargs=None, pooler_config=None)
+INFO 02-17 15:04:32 selector.py:135] Using Flash Attention backend.
+INFO 02-17 15:04:35 model_runner.py:1072] Starting to load model /DATA/LLM_model/deepseek/DeepSeek-R1-Distill-Qwen-1.5B...
+Loading safetensors checkpoint shards:   0% Completed | 0/1 [00:00<?, ?it/s]
+Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:00<00:00,  1.41it/s]
+Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:00<00:00,  1.41it/s]
+
+INFO 02-17 15:04:37 model_runner.py:1077] Loading model weights took 3.3460 GB
+INFO 02-17 15:04:41 worker.py:232] Memory profiling results: total_gpu_memory=79.15GiB initial_memory_usage=40.84GiB peak_torch_memory=4.75GiB memory_usage_post_profile=40.88GiB non_torch_memory=37.53GiB kv_cache_size=-34.37GiB gpu_memory_utilization=0.10
+INFO 02-17 15:04:41 gpu_executor.py:113] # GPU blocks: 0, # CPU blocks: 9362
+INFO 02-17 15:04:41 gpu_executor.py:117] Maximum concurrency for 8192 tokens per request: 0.00x
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/DATA/LLM_zhangfeng/data_clean/service/openai_api_distill_1__5B.py", line 229, in <module>
+[rank0]:     engine = AsyncLLMEngine.from_engine_args(engine_args)
+[rank0]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/llm_zhangfeng/anaconda3/envs/LLM/lib/python3.11/site-packages/vllm/engine/async_llm_engine.py", line 691, in from_engine_args
+[rank0]:     engine = cls(
+[rank0]:              ^^^^
+[rank0]:   File "/home/llm_zhangfeng/anaconda3/envs/LLM/lib/python3.11/site-packages/vllm/engine/async_llm_engine.py", line 578, in __init__
+[rank0]:     self.engine = self._engine_class(*args, **kwargs)
+[rank0]:                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/llm_zhangfeng/anaconda3/envs/LLM/lib/python3.11/site-packages/vllm/engine/async_llm_engine.py", line 264, in __init__
+[rank0]:     super().__init__(*args, **kwargs)
+[rank0]:   File "/home/llm_zhangfeng/anaconda3/envs/LLM/lib/python3.11/site-packages/vllm/engine/llm_engine.py", line 350, in __init__
+[rank0]:     self._initialize_kv_caches()
+[rank0]:   File "/home/llm_zhangfeng/anaconda3/envs/LLM/lib/python3.11/site-packages/vllm/engine/llm_engine.py", line 500, in _initialize_kv_caches
+[rank0]:     self.model_executor.initialize_cache(num_gpu_blocks, num_cpu_blocks)
+[rank0]:   File "/home/llm_zhangfeng/anaconda3/envs/LLM/lib/python3.11/site-packages/vllm/executor/gpu_executor.py", line 120, in initialize_cache
+[rank0]:     self.driver_worker.initialize_cache(num_gpu_blocks, num_cpu_blocks)
+[rank0]:   File "/home/llm_zhangfeng/anaconda3/envs/LLM/lib/python3.11/site-packages/vllm/worker/worker.py", line 268, in initialize_cache
+[rank0]:     raise_if_cache_size_invalid(num_gpu_blocks,
+[rank0]:   File "/home/llm_zhangfeng/anaconda3/envs/LLM/lib/python3.11/site-packages/vllm/worker/worker.py", line 493, in raise_if_cache_size_invalid
+[rank0]:     raise ValueError("No available memory for the cache blocks. "
+[rank0]: ValueError: No available memory for the cache blocks. Try increasing `gpu_memory_utilization` when initializing the engine.
+[rank0]:[W217 15:04:41.258120264 ProcessGroupNCCL.cpp:1250] Warning: WARNING: process group has NOT been destroyed before we destruct ProcessGroupNCCL. On normal program exit, the application should call destroy_process_group to ensure that any pending NCCL operations have finished in this process. In rare cases this process can exit before this point and block the progress of another member of the process group. This constraint has always been present,  but this warning has only been added since PyTorch 2.4 (function operator())
