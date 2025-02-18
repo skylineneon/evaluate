@@ -18,9 +18,9 @@ python -m vllm.entrypoints.openai.api_server \
     --port 8990 \
     --tensor-parallel-size 1 \
     --max-model-len 512 \
-    --gpu-memory-utilization 0.9 \
     --enable-prefix-caching \
-    --trust-remote-code
+    --trust-remote-code \
+    --gpu-memory-utilization 0.2 \
     
     
     
