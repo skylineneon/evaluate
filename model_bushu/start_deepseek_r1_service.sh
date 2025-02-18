@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 设置要使用的 GPU 编号
-export CUDA_VISIBLE_DEVICES=0
+export CUDA_VISIBLE_DEVICES=2
 
 # 检查模型路径是否存在
 MODEL_PATH="/DATA/LLM_model/deepseek/DeepSeek-R1-Distill-Qwen-1.5B"
@@ -14,9 +14,13 @@ fi
 python -m vllm.entrypoints.openai.api_server \
     --model "$MODEL_PATH" \
     --served-model-name "DeepSeek-R1-Distill-Qwen-1.5B" \
-    --port 8051 \
+    --host 0.0.0.0 \
+    --port 8990 \
     --tensor-parallel-size 1 \
+    --max-model-len 512 \
     --gpu-memory-utilization 0.9 \
-    --max-model-len 20 \
+    --enable-prefix-caching \
+    --trust-remote-code
+    
     
     
