@@ -1,7 +1,7 @@
 from openai import OpenAI
 
-url = "http://192.168.0.20:8051/v1"
-api_key = "token-abc123"
+url = "http://192.168.0.147:8509/v1/"
+api_key = "1234"
 
 client = OpenAI(base_url=url, api_key=api_key)
 
@@ -18,8 +18,4 @@ response = client.chat.completions.create(
 )
 # answer
 content = response.choices[0].message.content
-# Long COT
-reasoning_content = response.choices[0].message.reasoning_content
-
-print(reasoning_content)
 print(content)
